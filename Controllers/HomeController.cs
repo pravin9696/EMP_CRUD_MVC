@@ -15,6 +15,7 @@ namespace EMP_CRUD_MVC.Controllers
         }
         public ActionResult DashBoard()
         {
+            @ViewBag.userName = TempData["userName"];
             return View();
         }
     }

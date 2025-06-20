@@ -15,10 +15,44 @@ namespace EMP_CRUD_MVC.Controllers
         {
             return View();
         }
+        [HttpGet]
         public ActionResult Signup()
         {
+            DB_Emp_Oct_MVCEntities dbo = new DB_Emp_Oct_MVCEntities();
+            List<tblDept> deptList = dbo.tblDepts.ToList();
+            ViewBag.DeptList = deptList;
             //Emp registration+login details
             return View();
+        }
+        [HttpPost]
+        public ActionResult Signup(EmpDetailsWithLogin edl)
+        {
+            DB_Emp_Oct_MVCEntities dbo = new DB_Emp_Oct_MVCEntities();
+           
+
+            //step1  insert record in tblEmpDetails and create and retrive new empid
+
+            dbo.tblEmpDetails.Add(edl.empDetail);
+            int n=dbo.SaveChanges();
+
+            int empID = dbo.tblEmpDetails.FirstOrDefault(x => x.Name == edl.empDetail.Name && x.Address == edl.empDetail.Address && x.Contact == edl.empDetail.Contact).ID;
+
+            edl.login.EmpID = empID;
+            dbo.tblLogins.Add(edl.login);
+            n = dbo.SaveChanges();
+            if (n>0)
+            {
+                return RedirectToAction("Login");
+            }
+            else
+            {
+                
+                List<tblDept> deptList = dbo.tblDepts.ToList();
+                            ViewBag.DeptList = deptList;
+           
+                return View();
+            }
+            
         }
         [HttpGet]
 
@@ -40,6 +74,8 @@ namespace EMP_CRUD_MVC.Controllers
             }
             else
             {
+                String UserName = dbo.tblEmpDetails.FirstOrDefault(x => x.ID == lgTemp.EmpID).Name;
+                TempData["userName"] = UserName;
                 return RedirectToAction("DashBoard", "Home");
             }
 
