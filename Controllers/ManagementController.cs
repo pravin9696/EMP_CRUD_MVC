@@ -9,7 +9,7 @@ namespace EMP_CRUD_MVC.Controllers
 {
     public class ManagementController : Controller
     {
-        DB_Emp_Oct_MVCEntities dbo = new DB_Emp_Oct_MVCEntities();
+        EmployeeCRUDOperationMVCEntities dbo = new EmployeeCRUDOperationMVCEntities();
         // GET: Management
         public ActionResult Index()
         {
@@ -18,7 +18,7 @@ namespace EMP_CRUD_MVC.Controllers
         [HttpGet]
         public ActionResult Signup()
         {
-            DB_Emp_Oct_MVCEntities dbo = new DB_Emp_Oct_MVCEntities();
+            EmployeeCRUDOperationMVCEntities dbo = new EmployeeCRUDOperationMVCEntities();
             List<tblDept> deptList = dbo.tblDepts.ToList();
             ViewBag.DeptList = deptList;
             //Emp registration+login details
@@ -27,7 +27,7 @@ namespace EMP_CRUD_MVC.Controllers
         [HttpPost]
         public ActionResult Signup(EmpDetailsWithLogin edl)
         {
-            DB_Emp_Oct_MVCEntities dbo = new DB_Emp_Oct_MVCEntities();
+            EmployeeCRUDOperationMVCEntities dbo = new EmployeeCRUDOperationMVCEntities();
            
 
             //step1  insert record in tblEmpDetails and create and retrive new empid
@@ -50,7 +50,7 @@ namespace EMP_CRUD_MVC.Controllers
                 List<tblDept> deptList = dbo.tblDepts.ToList();
                             ViewBag.DeptList = deptList;
            
-                return View();
+                return View(); 
             }
             
         }

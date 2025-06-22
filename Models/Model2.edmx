@@ -1,0 +1,208 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EmployeeCRUDOperationMVCModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tblDepts">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DeptName" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tblEmpDetails">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="200" />
+          <Property Name="Contact" Type="varchar" MaxLength="12" />
+          <Property Name="DeptID" Type="int" />
+          <Property Name="Salary" Type="int" />
+        </EntityType>
+        <EntityType Name="tblLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="50" />
+          <Property Name="Password" Type="varchar" MaxLength="50" />
+          <Property Name="EmpID" Type="int" />
+        </EntityType>
+        <Association Name="FK_tblEmpDetails_tblDepts">
+          <End Role="tblDepts" Type="Self.tblDepts" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblEmpDetails" Type="Self.tblEmpDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDepts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmpDetails">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLogin_tblEmpDetails">
+          <End Role="tblEmpDetails" Type="Self.tblEmpDetails" Multiplicity="0..1" />
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmpDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblLogin">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeCRUDOperationMVCModelStoreContainer">
+          <EntitySet Name="tblDepts" EntityType="Self.tblDepts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblEmpDetails" EntityType="Self.tblEmpDetails" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tblLogin" EntityType="Self.tblLogin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tblEmpDetails_tblDepts" Association="Self.FK_tblEmpDetails_tblDepts">
+            <End Role="tblDepts" EntitySet="tblDepts" />
+            <End Role="tblEmpDetails" EntitySet="tblEmpDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLogin_tblEmpDetails" Association="Self.FK_tblLogin_tblEmpDetails">
+            <End Role="tblEmpDetails" EntitySet="tblEmpDetails" />
+            <End Role="tblLogin" EntitySet="tblLogin" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmployeeCRUDOperationMVCModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tblDept">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DeptName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tblEmpDetails" Relationship="Self.FK_tblEmpDetails_tblDepts" FromRole="tblDepts" ToRole="tblEmpDetails" />
+        </EntityType>
+        <EntityType Name="tblEmpDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+          <Property Name="Contact" Type="String" MaxLength="12" FixedLength="false" Unicode="false" />
+          <Property Name="DeptID" Type="Int32" />
+          <Property Name="Salary" Type="Int32" />
+          <NavigationProperty Name="tblDept" Relationship="Self.FK_tblEmpDetails_tblDepts" FromRole="tblEmpDetails" ToRole="tblDepts" />
+          <NavigationProperty Name="tblLogins" Relationship="Self.FK_tblLogin_tblEmpDetails" FromRole="tblEmpDetails" ToRole="tblLogin" />
+        </EntityType>
+        <EntityType Name="tblLogin">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="EmpID" Type="Int32" />
+          <NavigationProperty Name="tblEmpDetail" Relationship="Self.FK_tblLogin_tblEmpDetails" FromRole="tblLogin" ToRole="tblEmpDetails" />
+        </EntityType>
+        <Association Name="FK_tblEmpDetails_tblDepts">
+          <End Role="tblDepts" Type="Self.tblDept" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="tblEmpDetails" Type="Self.tblEmpDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblDepts">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblEmpDetails">
+              <PropertyRef Name="DeptID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tblLogin_tblEmpDetails">
+          <End Role="tblEmpDetails" Type="Self.tblEmpDetail" Multiplicity="0..1" />
+          <End Role="tblLogin" Type="Self.tblLogin" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tblEmpDetails">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="tblLogin">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmployeeCRUDOperationMVCEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tblDepts" EntityType="Self.tblDept" />
+          <EntitySet Name="tblEmpDetails" EntityType="Self.tblEmpDetail" />
+          <EntitySet Name="tblLogins" EntityType="Self.tblLogin" />
+          <AssociationSet Name="FK_tblEmpDetails_tblDepts" Association="Self.FK_tblEmpDetails_tblDepts">
+            <End Role="tblDepts" EntitySet="tblDepts" />
+            <End Role="tblEmpDetails" EntitySet="tblEmpDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tblLogin_tblEmpDetails" Association="Self.FK_tblLogin_tblEmpDetails">
+            <End Role="tblEmpDetails" EntitySet="tblEmpDetails" />
+            <End Role="tblLogin" EntitySet="tblLogins" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmployeeCRUDOperationMVCModelStoreContainer" CdmEntityContainer="EmployeeCRUDOperationMVCEntities">
+          <EntitySetMapping Name="tblDepts">
+            <EntityTypeMapping TypeName="EmployeeCRUDOperationMVCModel.tblDept">
+              <MappingFragment StoreEntitySet="tblDepts">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DeptName" ColumnName="DeptName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblEmpDetails">
+            <EntityTypeMapping TypeName="EmployeeCRUDOperationMVCModel.tblEmpDetail">
+              <MappingFragment StoreEntitySet="tblEmpDetails">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Contact" ColumnName="Contact" />
+                <ScalarProperty Name="DeptID" ColumnName="DeptID" />
+                <ScalarProperty Name="Salary" ColumnName="Salary" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tblLogins">
+            <EntityTypeMapping TypeName="EmployeeCRUDOperationMVCModel.tblLogin">
+              <MappingFragment StoreEntitySet="tblLogin">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
